@@ -39,7 +39,7 @@
 ## 已知问题与注意事项
 
 ### 依赖冲突（v0.2.6 已缓解）
-mootdx 锁死 httpx==0.25.2，与 langchain-google-genai 的 httpx>=0.28.1 冲突。v0.2.6 将 google-genai 移至可选依赖 `[google]`，`pip install -e .` 不再冲突。需要 Google 模型时 `pip install -e ".[google]"`。
+mootdx 锁死 httpx~=0.25，与 langchain-google-genai 的 httpx>=0.28.1 冲突。uv 的 universal resolver 会解析所有 optional deps 导致 `uv run pip install -e .` 也失败，因此 v0.2.13+ 不再声明 `[google]` extra。需要 Google 模型时手动 `pip install langchain-google-genai`。
 
 ### akshare 已移除（v0.2.5）
 v0.2.5 起完全移除 akshare 依赖，所有数据通过直连 HTTP API 获取。

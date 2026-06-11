@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from datetime import date
 
 import streamlit as st
@@ -25,6 +26,17 @@ _PROVIDERS: list[tuple[str, str]] = [
 _PROVIDER_DISPLAY = [name for name, _ in _PROVIDERS]
 _PROVIDER_KEYS = [key for _, key in _PROVIDERS]
 
+# Provider default base URLs (same as _PROVIDER_CONFIG in openai_client.py)
+_PROVIDER_DEFAULT_URLS: dict[str, str] = {
+    "deepseek": "https://api.deepseek.com",
+    "minimax": "https://api.minimax.chat/v1",
+    "qwen": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+    "glm": "https://api.z.ai/api/paas/v4/",
+    "xai": "https://api.x.ai/v1",
+    "openai": "https://api.openai.com/v1",
+    "ollama": "http://localhost:11434/v1",
+}
+
 
 def _resolve_user_input(raw: str) -> tuple[str, str | None]:
     """Resolve raw user input to (ticker_code, error_msg).
@@ -44,9 +56,13 @@ def _resolve_user_input(raw: str) -> tuple[str, str | None]:
 def _render_llm_config() -> None:
     """Render LLM provider and model selection controls."""
 
+    default_provider = st.session_state.get("llm_provider", "deepseek")
+    default_idx = next((i for i, k in enumerate(_PROVIDER_KEYS) if k == default_provider), 1)
+
     provider_idx = st.selectbox(
         "LLM 供应商",
         range(len(_PROVIDERS)),
+        index=default_idx,
         format_func=lambda i: _PROVIDER_DISPLAY[i],
         key="llm_provider_idx",
         help="选择你配置了 API Key 的供应商",
@@ -86,8 +102,15 @@ def _render_llm_config() -> None:
         st.session_state["quick_think_llm"] = custom_quick
         st.session_state["deep_think_llm"] = custom_deep
 
+    base_url_default = (
+        st.session_state.get("llm_base_url")
+        or os.getenv("BACKEND_URL")
+        or _PROVIDER_DEFAULT_URLS.get(provider_key, "")
+    )
+
     st.text_input(
         "API Base URL（第三方/代理，可选）",
+        value=base_url_default,
         key="llm_base_url",
         placeholder="例: https://your-proxy.com/v1",
         help=(

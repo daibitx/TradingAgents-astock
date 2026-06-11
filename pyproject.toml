@@ -36,7 +36,7 @@ dependencies = [
     "streamlit>=1.45.0",
     "fpdf2>=2.8.0",
     "python-dotenv>=1.1.0",
-    "mootdx>=0.10.0",
+    "mootdx>=0.11.7",
 ]
 
 [project.urls]
@@ -44,9 +44,6 @@ Homepage = "https://github.com/simonlin1212/tradingagents-astock"
 Repository = "https://github.com/simonlin1212/tradingagents-astock"
 Issues = "https://github.com/simonlin1212/tradingagents-astock/issues"
 Upstream = "https://github.com/TauricResearch/TradingAgents"
-
-[project.optional-dependencies]
-google = ["langchain-google-genai>=4.0.0"]
 
 [project.scripts]
 tradingagents = "cli.main:app"

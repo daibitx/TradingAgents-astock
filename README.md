@@ -152,8 +152,8 @@ git clone https://github.com/simonlin1212/tradingagents-astock.git
 cd tradingagents-astock
 pip install -e .
 
-# 如需使用 Google Gemini 模型（可选）：
-pip install -e ".[google]"
+# 如需使用 Google Gemini 模型（可选，与 mootdx 的 httpx 约束冲突，uv 项目建议先 pip install -e . 再单独安装）：
+pip install langchain-google-genai
 ```
 
 ### 2. 配置 LLM

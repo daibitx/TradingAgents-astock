@@ -503,8 +503,8 @@ def get_user_selections():
     console.print(
         create_question_box(
             "Step 1: Ticker Symbol",
-            "Enter the exact ticker symbol to analyze, including exchange suffix when needed (examples: SPY, CNC.TO, 7203.T, 0700.HK)",
-            "SPY",
+            "输入A股代码或中文全称（例: 300750 或 宁德时代）",
+            "300750",
         )
     )
     selected_ticker = get_ticker()
@@ -623,7 +623,7 @@ def get_ticker():
     from tradingagents.dataflows.utils import safe_ticker_component
 
     while True:
-        raw = typer.prompt("", default="SPY")
+        raw = typer.prompt("", default="300750")
         try:
             return safe_ticker_component(raw.strip())
         except ValueError as exc:
